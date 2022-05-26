@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% block title %} 給您最OK的房屋👌 {% endblock %}
+{% block content %}
+{% if error_code==True%}
+    <div style="width:30vw;" class="alert alert-danger" role="alert">
+        帳號或密碼錯誤！！
+    </div>
+    <meta http-equiv="refresh" content="1;url= https://o.ok-story.com/login ">
+{% else%}
+    <div style="width:30vw;" class="alert alert-danger" role="alert">
+        帳號或信箱已註冊！！
+    </div>
+    <meta http-equiv="refresh" content="1;url= https://o.ok-story.com/register ">
+{% endif %}
+{% endblock %}
