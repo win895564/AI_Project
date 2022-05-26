@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;" >
+
+<head>
+<title>給您最OK的房屋👌</title>
+<meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="/static/1651852388.ico" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.1.2/echarts.min.js" integrity="sha512-ppWbHq6q2f7HAwS481w6qikuC0XEeBnmkRg6KWnWg3zSIbJwWWBgsCDMAxzSB7SVqXzWwSYQ2s8TSJKjnaikMg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+  
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script> 
+
+
+<body onload="myFunction()"  background="../static/bg1.jpg " >
+
+<div class="topbar">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <img style="width:200px;"src="./static/okwhite.jpeg" class="navbar-brand" href="#"></img>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a style="font-size: 18px;"class="nav-link active" aria-current="page" href="/">首頁</a>
+          </li>
+          <li class="nav-item">
+            <a style="font-size: 18px;"class="nav-link" href="index">實價登陸</a>
+          </li>
+          <li class="nav-item">
+            <a style="font-size: 18px;"class="nav-link" href="/house_forecast">房價預測</a>
+          </li>
+          <li class="nav-item">
+            <a style="font-size: 18px;"class="nav-link" href="/team">團隊介紹</a>
+          </li>             
+        </ul>
+        
+        {% if session['name'] %}
+        <div class="alert alert-light" role="alert">
+          <center><img src="/static/user32.png"><a style="color: #5D95F1;"href="/member" class="alert-link">{{session['name']}}  /</a> <a style="color:red;"href="/logout" class="alert-link">登出</a></img> 
+      </div>
+        {% else %}
+        <span class="navbar-text">
+          <center><img src="/static/user32.png"><a  style="font-size: 18px;color: #5D95F1;"class="nav-link" href="/login" >登入/註冊</a></img>
+        </span>
+        {% endif %}
+      </div>
+    </div>
+  </nav>  
+</div>
+
+
+<div class="news">
+  <center>
+
+  <div class="new_container">
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        {% for i in range(1, 20) %}
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="{{i}}" aria-label="Slide {{i}}"></button>
+        {% endfor %}
+      </div>
+      <div class="carousel-inner">
+        {%for new_a in News_activate%}
+        <div class="carousel-item active">
+          <img src="{{new_a[3]}}" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h3><a style=" color:rgb(255, 255, 255)"href="{{new_a[2]}}">{{new_a[0]}}</a></h3>
+            <p href="{{new_a[2]}}">{{new_a[4]}}{{new_a[1]}}</p>
+          </div>
+        </div>
+        {% endfor %}
+        {% for new in News%}
+        <div class="carousel-item">
+          <img src="{{new[3]}}" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h3><a style=" color:rgb(255, 255, 255)" href="{{new[2]}}">{{new[0]}}</a></h3>
+            <p>{{new[4]}}{{new[1]}}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+<form method=post action="{{ url_for('forecast') }}">
+
+<div class="container"style='display:flex;width:70vw;'>
+                <div class="forcast_container">
+                <b><label style="text-align: center ;
+                          margin-top:3%;
+                          font-size: 24px;
+                          padding: 1%; 
+                          border-radius: 10px;
+                          -webkit-border-radius: 10px;
+                          -moz-border-radius: 10px;
+                          background-color: #f0f0f0; 
+
+                          color:#000000" >輸入您的房屋規格
+                          <img src="../static/house.png">
+                                          <div class="input-group mb-3" style="margin-top: 1%;">
+
+                                            <div class="input-group mb-2">
+                                            
+                                              <span class="input-group-text" id="inputGroup-sizing-default"><img src="../static/address.png">地址</span>
+                                              <input autocomplete="on"placeholder=例:台中市西屯區西屯路三段40號 name="address"type="search" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                                            </div>
+                                              <span class="input-group-text" id="inputGroup-sizing-default">屋齡</span>
+                                              <input name="age"type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                                        
+                                              <span class="input-group-text" id="inputGroup-sizing-default">房屋類型</span>
+                                              <select name="htype"class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
+                                                <option value="1">華廈(10層含以下有電梯)</option>
+                                                <option value="2">透天厝</option>
+                                                <option value="3">公寓(5樓含以下無電梯)</option>
+                                                <option value="4">住宅大樓(11層含以上有電梯)</option>
+                                                <option value="5">套房(1房(1廳)1衛)</option>
+                                                <option value="6">店面（店舖)</option>
+                                                <option value="7">其他</option>
+                                              </select>
+                                              <span class="input-group-text" id="inputGroup-sizing-default">總坪數</span>
+                                              <input name="totalarea"type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+
+                                              
+                                          <div class="input-group mb-3" style="margin-top:1%">
+                                            <span class="input-group-text" id="inputGroup-sizing-default">房</span>
+                                            <input name="room"type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                                            <span class="input-group-text" id="inputGroup-sizing-default">廳</span>
+                                            <input name="lobby"type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                                            <span class="input-group-text" id="inputGroup-sizing-default">衛</span>
+                                            <input name="bathroom"type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" required>
+                                          </div>
+                                          <div class="input-group mb-3">
+                                            <div class="form-check"style="margin-left:10px">
+                                              <input class="form-check-input" type="checkbox" value="" name="parking">
+                                              <label class="form-check-label" for="flexCheckDefault">
+                                              車位<img src="../static/parking.png">
+                                              </label>
+                                            </div>
+                                            <div class="form-check"style="margin-left:10px">
+                                              <input class="form-check-input" type="checkbox" value="" name="elevator">
+                                              <label class="form-check-label" for="flexCheckDefault">
+                                                電梯<img src="../static/elevator.png">
+                                              </label>
+                                            </div>
+                                            <div class="form-check"style="margin-left:10px">
+                                              <input class="form-check-input" type="checkbox" value="" name="manage">
+                                              <label class="form-check-label" for="flexCheckDefault">
+                                                管理組織<img src="../static/manage.png">
+                                              </label>
+                                            </div>
+                                          </div>
+                                          </div>
+                                          <button class="btn btn-primary" style="margin-top:1%" name="predict_button" value="前往預測">前往預測</button>
+
+
+                </label>
+                
+                {% if pred_code==1%}
+                <div class="alert alert-danger" role="alert"style="margin-top:5% ;width:28.5vw">
+                  因地址輸入有誤或查詢無結果，故預測精準度不可參考。
+                </div>
+                {% endif %}
+                {% if pred_code==0%}
+                <select id="select_model"style="margin-top: 1%; width:10vw"class="form-select" aria-label="Default select example">
+                  <option selected disabled value="">選擇模型種類</option>
+                  <option value="light_GBM">lightGBM(Default)</option>
+                  <option value="linear_SVR">linearSVR</option>
+                </select>
+                {%  endif %}
+                <div id="div_pred" style="display:block;">
+                        <div id="pred_plot"  class="plot"style="margin-top:10%;height:30vw;">
+                            
+                          {{ pred | safe }}
+                            
+                        </div>   
+                </div> 
+                <div id="div_linear" style="display:none;"> 
+                  <div id="pred_linear"  class="plot"style="margin-top:10%;height:30vw;">
+                      
+                    {{ pred_linear | safe }}
+                      
+                  </div>   
+                </div> 
+                      
+                </div>
+                <div style="border-radius: 10px; -webkit-border-radius: 10px;-moz-border-radius:10px;padding: 5%;margin-left: 30%; margin-top: 8%; width:20vw;background-color: #ffffff; ">
+                  <select name="select_monitor"id="select_monitor"class="form-select" aria-label="Default select example">
+                    <option selected disabled value="">選擇偵測站</option>
+                      <option value="shalu">沙鹿</option>
+                      <option value="xitun">西屯</option>
+                      <option value="zonming">忠明</option>
+                      <option value="dali">大里</option>
+                      <option value="fengyung">豐原</option>
+                  </select>
+                </div>
+
+
+
+                <div id="monitor_shalu"style="display:block;background-color:#ffffff;margin-top:8%;margin-left:30% ;text-align:center;width:20vw;padding:1%; ">
+                      <b  style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">{{s_[0]}}</b>
+                      <h4 style="color:#14B4D0">{{s_[1]}}</h4>
+                      
+                    {% if s_[2]<=50 %}
+                      <div class="airaqi"style="border-color: rgb(0, 153, 102);">
+                        <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</br>
+                        <b style="font-size: 60px;"class="aqival">{{s_[2]}}</b>
+                        <span>良好</span>
+                      </div>
+
+                    {% elif s_[2]>50 and s_[2]<=101 %}
+                      <div class="airaqi" style="border-color: rgb(255, 222, 51);">
+                          <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</br>
+                          <b style="font-size: 60px;"class="aqival">{{s_[2]}}</b>
+                          <span>普通</span>
+                      </div>
+                    {% elif s_[2]>100 %}
+                      <div class="airaqi" style="border-color: rgb(255, 143, 51);">
+                        <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</div>
+                        <b style="font-size: 60px;"class="aqival">{{s_[2]}}</b>
+                        <span>危險</span>
+                      </div>  
+                    {%endif%}
+
+
+                    <hr>
+                    <div id="B">
+                      <a>PM2.5(μg/m3) 細懸浮微粒</a>
+                      <ul>
+                      　<li>移動平均 </li>
+                      <b>{{s_[3]}}</b>
+                      　<li>小時濃度</li>
+                      <b>{{s_[4]}}</b>
+                      </ul>
+                      <hr>
+                    </div>
+                    <div id="B">
+                      <a>PM10(μg/m3)懸浮微粒</a>
+                      <ul>
+                      　<li>移動平均 </li>
+                      <b>{{s_[5]}}</b>
+                      　<li>小時濃度</li>
+                      <b >{{s_[6]}}</b>
+                      </ul>
+                      <hr>
+                    </div>
+                    <div id="B">
+                      <a>O3(ppb)臭氧</a>
+                      <ul>
+                      　<li>8小時移動平均</li>
+                      <b>{{s_[7]}}</b>
+                      　<li>小時濃度</li>
+                      <b>{{s_[8]}}</b>
+                      </ul>
+                      <hr>
+                    </div>
+                    <div id="B">
+                      <a>CO(ppm)一氧化碳</a>
+                      <ul>
+                      　<li>8小時移動平均</li>
+                      <b >{{s_[9]}}</b>
+                      　<li>小時濃度</li>
+                      <b>{{s_[10]}}</b>
+                      </ul>
+                      <hr>
+                    </div>
+                    <div id="B">
+                      <a>SO2(ppb)二氧化硫</a>
+                      <ul>
+                      　<li>小時濃度</li>
+                      <b>{{s_[11]}}</b>
+                      </ul>
+                      <hr>
+                    </div>
+                    <div id="B">
+                      <a>NO2(ppb)二氧化氮</a>
+                      <ul>
+
+                      　<li>小時濃度</li>
+                      <b>{{s_[12]}}</b>
+                      </ul>
+                      
+                    </div>
+                </div>    
+                <!------------沙鹿--------->
+
+                <!-------------西屯-------->
+                <div id="monitor_xitun"style="display:none;background-color:#ffffff;margin-top:8%;margin-left:30% ;text-align:center;width:20vw;padding:1%; ">
+                  <b  style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">{{x_[0]}}</b>
+                  <h4 style="color:#14B4D0">{{x_[1]}}</h4>
+                  
+                {% if x_[2]<=50 %}
+                  <div class="airaqi"style="border-color: rgb(0, 153, 102);">
+                    <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</br>
+                    <b style="font-size: 60px;"class="aqival">{{x_[2]}}</b>
+                    <span>良好</span>
+                  </div>
+
+                {% elif x_[2]>50 and x_[2]<=101 %}
+                  <div class="airaqi" style="border-color: rgb(255, 222, 51);">
+                      <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</br>
+                      <b style="font-size: 60px;"class="aqival">{{x_[2]}}</b>
+                      <span>普通</span>
+                  </div>
+                {% elif x_[2]>100 %}
+                  <div class="airaqi" style="border-color: rgb(255, 143, 51);">
+                    <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</div>
+                    <b style="font-size: 60px;"class="aqival">{{x_[2]}}</b>
+                    <span>危險</span>
+                  </div>  
+                {%endif%}
+
+
+                <hr>
+                <div id="B">
+                  <a>PM2.5(μg/m3) 細懸浮微粒</a>
+                  <ul>
+                  　<li>移動平均 </li>
+                  <b>{{x_[3]}}</b>
+                  　<li>小時濃度</li>
+                  <b>{{x_[4]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>PM10(μg/m3)懸浮微粒</a>
+                  <ul>
+                  　<li>移動平均 </li>
+                  <b>{{x_[5]}}</b>
+                  　<li>小時濃度</li>
+                  <b >{{x_[6]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>O3(ppb)臭氧</a>
+                  <ul>
+                  　<li>8小時移動平均</li>
+                  <b>{{x_[7]}}</b>
+                  　<li>小時濃度</li>
+                  <b>{{x_[8]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>CO(ppm)一氧化碳</a>
+                  <ul>
+                  　<li>8小時移動平均</li>
+                  <b >{{x_[9]}}</b>
+                  　<li>小時濃度</li>
+                  <b>{{x_[10]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>SO2(ppb)二氧化硫</a>
+                  <ul>
+                  　<li>小時濃度</li>
+                  <b>{{x_[11]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>NO2(ppb)二氧化氮</a>
+                  <ul>
+
+                  　<li>小時濃度</li>
+                  <b>{{x_[12]}}</b>
+                  </ul>
+                  
+                </div>
+            </div>    
+                <!-------------西屯-------->
+                <!-------------忠明-------->
+                <div id="monitor_zonming"style="display:none;background-color:#ffffff;margin-top:8%;margin-left:30% ;text-align:center;width:20vw;padding:1%; ">
+                  <b  style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">{{z_[0]}}</b>
+                  <h4 style="color:#14B4D0">{{z_[1]}}</h4>
+                  
+                {% if z_[2]<=50 %}
+                  <div class="airaqi"style="border-color: rgb(0, 153, 102);">
+                    <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</br>
+                    <b style="font-size: 60px;"class="aqival">{{z_[2]}}</b>
+                    <span>良好</span>
+                  </div>
+
+                {% elif z_[2]>50 and z_[2]<=101 %}
+                  <div class="airaqi" style="border-color: rgb(255, 222, 51);">
+                      <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</br>
+                      <b style="font-size: 60px;"class="aqival">{{z_[2]}}</b>
+                      <span>普通</span>
+                  </div>
+                {% elif z_[2]>100 %}
+                  <div class="airaqi" style="border-color: rgb(255, 143, 51);">
+                    <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</div>
+                    <b style="font-size: 60px;"class="aqival">{{z_[2]}}</b>
+                    <span>危險</span>
+                  </div>  
+                {%endif%}
+
+
+                <hr>
+                <div id="B">
+                  <a>PM2.5(μg/m3) 細懸浮微粒</a>
+                  <ul>
+                  　<li>移動平均 </li>
+                  <b>{{z_[3]}}</b>
+                  　<li>小時濃度</li>
+                  <b>{{z_[4]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>PM10(μg/m3)懸浮微粒</a>
+                  <ul>
+                  　<li>移動平均 </li>
+                  <b>{{z_[5]}}</b>
+                  　<li>小時濃度</li>
+                  <b >{{z_[6]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>O3(ppb)臭氧</a>
+                  <ul>
+                  　<li>8小時移動平均</li>
+                  <b>{{z_[7]}}</b>
+                  　<li>小時濃度</li>
+                  <b>{{z_[8]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>CO(ppm)一氧化碳</a>
+                  <ul>
+                  　<li>8小時移動平均</li>
+                  <b >{{z_[9]}}</b>
+                  　<li>小時濃度</li>
+                  <b>{{z_[10]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>SO2(ppb)二氧化硫</a>
+                  <ul>
+                  　<li>小時濃度</li>
+                  <b>{{z_[11]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>NO2(ppb)二氧化氮</a>
+                  <ul>
+
+                  　<li>小時濃度</li>
+                  <b>{{z_[12]}}</b>
+                  </ul>
+                  
+                </div>
+            </div>  
+                <!-------------忠明-------->
+                <!-------------大里-------->
+            <div id="monitor_dali"style="display:none;background-color:#ffffff;margin-top:8%;margin-left:30% ;text-align:center;width:20vw;padding:1%; ">
+                  <b  style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">{{d_[0]}}</b>
+                  <h4 style="color:#14B4D0">{{d_[1]}}</h4>
+                  
+                {% if d_[2]<=50 %}
+                  <div class="airaqi"style="border-color: rgb(0, 153, 102);">
+                    <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</br>
+                    <b style="font-size: 60px;"class="aqival">{{d_[2]}}</b>
+                    <span>良好</span>
+                  </div>
+
+                {% elif d_[2]>50 and d_[2]<=100 %}
+                  <div class="airaqi" style="border-color: rgb(255, 222, 51);">
+                      <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</br>
+                      <b style="font-size: 60px;"class="aqival">{{d_[2]}}</b>
+                      <span>普通</span>
+                  </div>
+                  {% elif d_[2]>100 %}
+                  <div class="airaqi" style="border-color: rgb(255, 143, 51);">
+                    <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</div>
+                    <b style="font-size: 60px;"class="aqival">{{d_[2]}}</b>
+                    <span>危險</span>
+                  </div>  
+                  {%endif%}
+
+
+                <hr>
+                <div id="B">
+                  <a>PM2.5(μg/m3) 細懸浮微粒</a>
+                  <ul>
+                  　<li>移動平均 </li>
+                  <b>{{d_[3]}}</b>
+                  　<li>小時濃度</li>
+                  <b>{{d_[4]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>PM10(μg/m3)懸浮微粒</a>
+                  <ul>
+                  　<li>移動平均 </li>
+                  <b>{{d_[5]}}</b>
+                  　<li>小時濃度</li>
+                  <b >{{d_[6]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>O3(ppb)臭氧</a>
+                  <ul>
+                  　<li>8小時移動平均</li>
+                  <b>{{d_[7]}}</b>
+                  　<li>小時濃度</li>
+                  <b>{{d_[8]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>CO(ppm)一氧化碳</a>
+                  <ul>
+                  　<li>8小時移動平均</li>
+                  <b >{{d_[9]}}</b>
+                  　<li>小時濃度</li>
+                  <b>{{d_[10]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>SO2(ppb)二氧化硫</a>
+                  <ul>
+                  　<li>小時濃度</li>
+                  <b>{{d_[11]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>NO2(ppb)二氧化氮</a>
+                  <ul>
+
+                  　<li>小時濃度</li>
+                  <b>{{d_[12]}}</b>
+                  </ul>
+                  
+                </div>
+            </div>  
+                <!-------------大里-------->
+                <!-------------豐原-------->
+                <div id="monitor_fengyung"style="display:none;background-color:#ffffff;margin-top:8%;margin-left:30% ;text-align:center;width:20vw;padding:1%; ">
+                  <b  style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">{{f_[0]}}</b>
+                  <h4 style="color:#14B4D0">{{f_[1]}}</h4>
+                  
+                {% if f_[2]<=50 %}
+                  <div class="airaqi"style="border-color: rgb(0, 153, 102);">
+                    <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</br>
+                    <b style="font-size: 60px;"class="aqival">{{f_[2]}}</b>
+                    <span>良好</span>
+                  </div>
+
+                {% elif f_[2]>50 and f_[2]<=100 %}
+                  <div class="airaqi" style="border-color: rgb(255, 222, 51);">
+                      <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</br>
+                      <b style="font-size: 60px;"class="aqival">{{f_[2]}}</b>
+                      <span>普通</span>
+                  </div>
+                  {% elif d_[2]>100 %}
+                  <div class="airaqi" style="border-color: rgb(255, 143, 51);">
+                    <br style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">空氣品質指標AQI</div>
+                    <b style="font-size: 60px;"class="aqival">{{f_[2]}}</b>
+                    <span>危險</span>
+                  </div>  
+                  {%endif%}
+
+
+                <hr>
+                <div id="B">
+                  <a>PM2.5(μg/m3) 細懸浮微粒</a>
+                  <ul>
+                  　<li>移動平均 </li>
+                  <b>{{f_[3]}}</b>
+                  　<li>小時濃度</li>
+                  <b>{{f_[4]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>PM10(μg/m3)懸浮微粒</a>
+                  <ul>
+                  　<li>移動平均 </li>
+                  <b>{{f_[5]}}</b>
+                  　<li>小時濃度</li>
+                  <b >{{f_[6]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>O3(ppb)臭氧</a>
+                  <ul>
+                  　<li>8小時移動平均</li>
+                  <b>{{f_[7]}}</b>
+                  　<li>小時濃度</li>
+                  <b>{{f_[8]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>CO(ppm)一氧化碳</a>
+                  <ul>
+                  　<li>8小時移動平均</li>
+                  <b >{{f_[9]}}</b>
+                  　<li>小時濃度</li>
+                  <b>{{f_[10]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>SO2(ppb)二氧化硫</a>
+                  <ul>
+                  　<li>小時濃度</li>
+                  <b>{{f_[11]}}</b>
+                  </ul>
+                  <hr>
+                </div>
+                <div id="B">
+                  <a>NO2(ppb)二氧化氮</a>
+                  <ul>
+
+                  　<li>小時濃度</li>
+                  <b>{{f_[12]}}</b>
+                  </ul>
+                  
+                </div>
+            </div> 
+                <!-------------豐原-------->
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+</body>
+<style>
+html * html::before,html:after{
+  font-family: "Century Gothic","Microsoft JhengHei","Apple LiGothic Medium","PMingLiU","sans-serif","serif";
+}
+#B ul li {
+  display:inline;
+}
+#B b{
+  
+  font-family: "Century Gothic","Microsoft JhengHei","Apple LiGothic Medium","PMingLiU","sans-serif","serif";
+  color:#5D95F1;
+  font-size: 26px;
+}
+
+
+.aquval {
+    display: block;
+    line-height: 1em;
+    margin: 6px 0;
+    font-size: 60px;
+    font-weight: 700;
+}
+
+.airaqi{
+    border-width: 10px;
+    border-style: solid;
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    display: table;
+    margin: 10px auto;
+    padding: 22px;
+}
+
+#monitor_shalu {
+  border-radius: 10px;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+}
+#monitor_xitun {
+  border-radius: 10px;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+}
+#monitor_zonming {
+  border-radius: 10px;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+}
+#monitor_dali {
+  border-radius: 10px;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+}
+#monitor_fengyung {
+  border-radius: 10px;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+}
+.info {
+  display: inline-block;
+
+}
+h3{
+  text-shadow: 3px 5px 3px #333333;
+  color:rgb(98, 98, 98)
+}
+p{
+  text-shadow: 3px 5px 3px #333333;
+}
+.new_container{
+width: 40.4%;
+min-height: auto ;
+}
+.news{
+  width:100%;
+  height:21.3vw;
+  background-color :#ffffff;
+  background-image:url(/static/rowbg5.jpg);
+  background-size:cover;
+  }
+p{
+  font-weight: bold;
+  font-family:Microsoft JhengHei;
+}
+h3{
+  font-family:Microsoft JhengHei;
+  font-weight: bold;
+    color:aliceblue
+}
+
+</style>
+
+
+<script>
+  function myFunction() {
+ 
+  }
+  var myCarousel = document.querySelector('#carouselExampleCaptions')
+  var carousel = new bootstrap.Carousel(myCarousel, {
+    interval: 5000,
+    wrap:   true 
+  })
+  const el = document.getElementById('select_monitor');
+
+const box = document.getElementById('monitor_shalu');
+const box1 = document.getElementById('monitor_xitun');
+const box2 = document.getElementById('monitor_zonming');
+const box3 = document.getElementById('monitor_dali');
+const box4 = document.getElementById('monitor_fengyung');
+el.addEventListener('change', function handleChange(event) {
+  if (event.target.value === 'shalu') {
+    box.style.display = 'block';
+  } else {
+    box.style.display = 'none';
+  }
+  if (event.target.value === 'xitun') {
+    box1.style.display = 'block';
+  } else {
+    box1.style.display = 'none';
+  }
+  if (event.target.value === 'zonming') {
+    box2.style.display = 'block';
+  } else {
+    box2.style.display = 'none';
+  }
+  if (event.target.value === 'dali') {
+    box3.style.display = 'block';
+  } else {
+    box3.style.display = 'none';
+  }
+  if (event.target.value === 'fengyung') {
+    box4.style.display = 'block';
+  } else {
+    box4.style.display = 'none';
+  }
+});
+  
+
+
+const model=document.getElementById('select_model')
+const GBMbox=document.getElementById('div_pred')
+const linearbox=document.getElementById('div_linear')
+
+model.addEventListener('change', function handleChange(event) {
+  if (event.target.value==='light_GBM'){
+    GBMbox.style.display='block';
+  }else{
+    GBMbox.style.display='none';
+  }
+  if (event.target.value==='linear_SVR'){
+    linearbox.style.display='block';
+  }else{
+    linearbox.style.display='none';
+  }
+})
+
+
+
+</script>
+
+  
+</html>

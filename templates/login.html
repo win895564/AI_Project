@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block title %} 給您最OK的房屋👌 {% endblock %}
+{% block content %}
+<div class="reg_container">
+    <div class="container">
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label for="exampleInputEmail1">電子郵件:</label>
+                <input class="form-control" type="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">密碼:</label>
+                <input class="form-control" type="password" name="password"required>
+            </div>
+            <div>
+                <div id="liveAlertPlaceholder"></div>
+                <button  style="margin-top: 5%;"class="btn btn-primary" id="liveAlertBtn">登入</button>
+                <a href="/register" style="margin-left: 8.5vw;">還未註冊帳號?</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+

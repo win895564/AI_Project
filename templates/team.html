@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>給您最OK的房屋👌</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script> 
+<link rel="shortcut icon" href="/static/1651852388.ico" />
+</head>
+<body>
+
+<!-- Navbar (sit on top) -->
+
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <img style="width:200px;"src="./static/okwhite.jpeg" class="navbar-brand" href="#"></img>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a style="font-size: 18px;"class="nav-link active" aria-current="page" href="/">首頁</a>
+            </li>
+            <li class="nav-item">
+              <a style="font-size: 18px;"class="nav-link" href="index">實價登陸</a>
+            </li>
+            <li class="nav-item">
+              <a style="font-size: 18px;"class="nav-link" href="/house_forecast">房價預測</a>
+            </li>
+            <li class="nav-item">
+              <a style="font-size: 18px;"class="nav-link" href="/team">團隊介紹</a>
+            </li>             
+          </ul>
+          
+          {% if session['name'] %}
+              <div class="alert alert-light" role="alert">
+                <center><img src="/static/user32.png"><a style="color: #5D95F1;"href="/member" class="alert-link">{{session['name']}}  /</a> <a style="color:red;"href="/logout" class="alert-link">登出</a></img> 
+            </div>
+          {% else %}
+              <span class="navbar-text">
+                <center><img src="/static/user32.png"><a  style="font-size: 18px;color: #5D95F1;"class="nav-link" href="/login" >登入/註冊</a></img>
+              </span>
+          {% endif %}
+        </div>
+      </div>
+    </nav>  
+
+
+<!-- Header -->
+<header  class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+  <img class="w3-image" src="/static/1802071.jpg" alt="Architecture" width="1500" height="800">
+  <div class="w3-display-middle w3-margin-top w3-center">
+    <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>OK</b></span> <span class="w3-hide-small w3-text-light-grey">Story</span></h1>
+  </div>
+</header>
+
+<!-- Page content -->
+<div class="w3-content w3-padding" style="max-width:1564px">
+
+  <a href="https://www.jkopay.com/transfer?j=Transfer:907528440"style="width:50px;height:50px;position:fixed;right:10px;top:10%;"class="btn-style"><img style="border-radius: 30px;-webkit-border-radius:30px;-moz-border-radius: 30px;width:50px;height:50px;position:fixed;right:10px;top:10%;" src="static\Streetlogo.png"></a>
+
+  <!-- About Section -->
+  <div class="w3-container w3-padding-32" id="about">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">關於</h3>
+    <p><b>在台灣，民眾買房意願，一直都很熱烈，每個人成年後，都會希望有間自己的房子，為了滿足購屋需求的客群，</p>
+    <p>所以我們團隊就利用機器學習，塑造一個能預測房價模型，</p>
+    <p>包含房地產投資客、資金配置理財的投資者、實際買房需求民眾、政府都市規劃、建商評估建案、店家進駐成本參考、房仲價格刊登參考等等，</p>
+    <p>都能使用我們的房價預測功能，進行未來房屋價格的預測，以利在房價居高不下的台灣房市中，得到最佳買點的參考！</p>
+    
+  </div>
+
+  <div class="w3-row-padding">
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <img src="/static/018.jpg" alt="John" style="width:75%">
+      <h3>陳東奕</h3>
+      <p class="w3-opacity"></p>
+      <p></p>
+    
+    </div>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <img src="/static/13.jpg" alt="Jane" style="width:100%">
+      <h3>周韋薰</h3>
+      <p class="w3-opacity"></p>
+      <p></p>
+      
+    </div>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <img src="/static/19.jpg" alt="Mike" style="width:100%">
+      <h3>陳威良</h3>
+      <p class="w3-opacity"></p>
+      <p></p>
+      
+    </div>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+      <img src="/static/22.jpg" alt="Dan" style="width:70%">
+      <h3>吳俊言</h3>
+      <p class="w3-opacity"></p>
+      <p></p>
+      
+    </div>
+  </div>
+<form method="POST">
+  <!-- Contact Section -->
+  <div class="w3-container w3-padding-32" id="contact">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">給我們建議</h3>
+    <p>讓我們知道關於網站更多指導</p>
+    <form action="/action_page.php" target="_blank">
+      <input values='Name'class="w3-input w3-border" type="text" placeholder="稱呼" required name="Name">
+      <input values='Email' class="w3-input w3-section w3-border" type="text" placeholder="電子信箱" required name="Email">
+      <input values='Subject'class="w3-input w3-section w3-border" type="text" placeholder="您的職位" required name="Subject">
+      <input values='Comment'class="w3-input w3-section w3-border" type="text" placeholder="建議說明" required name="Comment">
+      <button name="send_message" value="送出訊息" class="w3-button w3-black w3-section" type="submit" >
+        <i class="fa fa-paper-plane"></i> 送出訊息
+      </button>
+    </form>
+  </div>
+  
+<!-- Image of location/map -->
+
+
+<!-- End page content -->
+</div>
+
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-16">
+  <p> <a   target="_blank" class="w3-hover-text-green">@Copyright 2022</a></p>
+</footer>
+
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{% block title %} 給您最OK的房屋👌 {% endblock %}
+{% block content %}
+
+{% if session['name'] %}
+    <div  style="width:30vw;"class="alert alert-success" role="alert">
+        歡迎 <span>{{ session['name'] }}</span> 的登入！5秒後自動跳轉
+    </div>
+    <meta http-equiv="refresh" content="5;url= https://o.ok-story.com ">
+{% else %}
+    <div style="width:30vw;"class="alert alert-warning" role="alert">
+        目前為登出狀態！5秒後自動跳轉
+    </div>
+    <meta http-equiv="refresh" content="5;url= https://o.ok-story.com ">
+{% endif %}
+
+{% endblock %}

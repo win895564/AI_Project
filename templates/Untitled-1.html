@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+
+  <style>
+    #box {
+      display: none;
+      background-color: salmon;
+      color: white;
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+  <body>
+    <label for="select">Choose an Option:</label>
+
+    <select name="select" id="select">
+      <option value="hide">Hide</option>
+      <option value="show">Show</option>
+    </select>
+
+    <div id="box">Box content</div>
+
+    <script>
+      const el = document.getElementById('select');
+
+      const box = document.getElementById('box');
+
+      el.addEventListener('change', function handleChange(event) {
+        if (event.target.value === 'show') {
+          box.style.display = 'block';
+        } else {
+          box.style.display = 'none';
+        }
+      });
+    </script>
+  </body>
+</html>

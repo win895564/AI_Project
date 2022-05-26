@@ -1,0 +1,101 @@
+{% extends 'layout.html' %}
+{% block title %} 給您最OK的房屋👌 {% endblock %}
+{% block content %}
+{% if session['name'] %}
+
+    
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.0/css/jquery.dataTables.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.12.0/js/jquery.dataTables.min.js"></script>
+<div class="div-table" style="padding:1%;border-radius: 10px;-webkit-border-radius: 10px;-moz-border-radius: 10px;width:90vw;background-color:azure">
+    
+    <table id="sort-table"  class="table " style="font-family:Century Gothic,Microsoft JhengHei,Apple LiGothic Medium,PMingLiU,sans-serif,serif;">
+        <thead>
+            <tr >
+                <th scope="row">帳號</th>
+                <th>地址</th>
+                <th>屋齡</th>
+                <th>房屋類型</th>
+                <th>總坪數</th>
+                <th>房</th>
+                <th>廳</th>
+                <th>衛</th>
+                <th>車位</th>
+                <th>電梯</th>
+                <th>管理組織</th>
+                <th>時間</th>
+                <th>刪除</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {%for member in membersearch%} 
+            <tr>
+                <td class="table-primary">{{ member[1] }}</td>
+                <td class="table-primary">{{ member[2] }}</td>
+                <td class="table-primary">{{ member[3] }}</td>
+                <td class="table-primary">{{ member[4] }}</td>
+                <td class="table-primary">{{ member[5] }}</td>
+                <td class="table-primary">{{ member[6] }}</td>
+                <td class="table-primary">{{ member[7] }}</td>
+                <td class="table-primary">{{ member[8] }}</td>
+                <td class="table-primary">{{ member[9] }}</td>
+                <td class="table-primary">{{ member[10] }}</td>
+                <td class="table-primary">{{ member[11] }}</td>
+                <td class="table-primary">{{ member[12] }}</td>
+            
+                <form method=post action="{{ url_for('member') }}"><td><button class="btn btn-danger" name= {{ member[0] }} value={{ member[0]}}>刪除</button></td></form>
+            </tr>
+            
+            {% endfor%}
+        </tbody>                
+    </table>
+</div>
+
+{% else %}
+    <div  style="width:30vw;"class="alert alert-success" role="alert">
+        <a>您無權訪問當前頁面 請先登入帳號</a>
+    </div>
+
+{% endif %}
+<script>
+$(document).ready( function () {
+    
+    $('#sort-table').DataTable({
+        "processing": true, 
+        bProcessing: true,
+        bStateSave:false,
+        "orderClasses": false,
+        "language": {
+                "lengthMenu": "顯示 _MENU_ 筆資料",
+                "sProcessing": "處理中...",
+                "sZeroRecords": "查無資料",
+                "sInfo": "目前有 _MAX_ 筆資料",
+                "sInfoEmpty": "目前共有 0 筆紀錄",
+                "sInfoFiltered": " ",
+                "sInfoPostFix": "",
+                "sSearch": "搜尋:",
+                "sUrl": "",
+                "sEmptyTable": "目前尚無資料",
+                "sLoadingRecords": "讀取資料中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首頁",
+                    "sPrevious": "上一頁",
+                    "sNext": "下一頁",
+                    "sLast": "末頁"
+                },
+                "order": [[0, "desc"]],
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+        }
+        
+    } );
+} );
+
+</script>
+{% endblock %}
