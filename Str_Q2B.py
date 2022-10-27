@@ -19,7 +19,7 @@ def strQ2B(ustring):
         ss.append(rstring)
     return ''.join(ss)
 def strB2Q(ustring):
-    """把字串全形轉半形"""
+    """把字串半形轉全形"""
     ss = []
     for s in ustring:
         rstring = ""
